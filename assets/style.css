@@ -1,17 +1,89 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap');
-/* @import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap'); */
-/* @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap'); */
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 body {
-    /* font-family: 'Quicksand', sans-serif; */
-    font-family: 'Gochi Hand', cursive;
-    /* font-family: 'Neucha', cursive; */
-    /* font-family: 'Patrick Hand', cursive; */
-    background: #EEE;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    height: 100vh;
+    overflow: hidden;
 }
 
-main {
-    margin: 100px 0;
+#chatBox {
+    height: calc(100vh - 230px);
+    padding-bottom: 100px;
+    margin-bottom: 100px;
+}
+
+.text-xs {
+    font-size: 11px !important;
+}
+
+.bot-message {
+    background: #f3f8d2;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    float: left;
+    width: auto;
+    max-width: 90%;
+    clear: both;
+}
+
+.user-message {
+    background: #afe89c;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0 10px 0;
+    float: right;
+    width: auto;
+    max-width: 90%;
+    clear: both;
+}
+
+#loader {
+    width: 80px;
+    height: 20px;
+    position: absolute;
+    bottom: 160px;
+    left: calc(50% - 20px);
+}
+
+#loader::before, #loader::after {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: #4caf50;
+    animation: dotAnim 1.5s infinite ease-in-out;
+}
+
+#loader::before {
+    animation-delay: 0s;
+}
+
+#loader::after {
+    animation-delay: 0.3s;
+}
+
+#loader::after::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    animation: dotAnim 1.5s infinite ease-in-out;
+    animation-delay: 0.3s;
+}
+
+@keyframes dotAnim {
+    0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+    }
+    50% {
+    transform: scale(1.5);
+    opacity: 1;
+    }
 }

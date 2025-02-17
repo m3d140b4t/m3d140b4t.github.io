@@ -1,33 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>Mediaobat.Com</title>
-    <meta name="description" content="Media kurasi berita seputar obat">
+<head>
+  <title>MediaObat.com - Chatbot AI untuk Konsultasi Obat dan Kesehatan</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="keywords"
+    content="chatbot AI, obat, konsultasi obat, kesehatan, AI medis, chatbot kesehatan, obat online, informasi obat, AI untuk kesehatan">
+  <meta name="description"
+    content="MediaObat.com menyediakan chatbot AI yang membantu Anda mencari informasi tentang obat dan memberikan konsultasi kesehatan secara otomatis. Dapatkan solusi medis cepat dan tepat dari teknologi canggih kami.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    <link rel="icon" href="assets/favicon.png">
-    <link href="assets/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/style.css" rel="stylesheet">
-  </head>
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="icon" sizes="192x192" href="assets/android-chrome-192x192.png">
+  <link rel="icon" sizes="512x512" href="assets/android-chrome-512x512.png">
+  <meta name="msapplication-TileImage" content="assets/mstile-150x150.png">
+  <meta name="msapplication-TileColor" content="#000000">
 
-  <body>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="assets/style.css" rel="stylesheet">
+</head>
 
-    <main role="main" class="container">
-
-      <div class="offset-md-2 col-md-8 text-center">
-        <h1 style="display: none;">Mediaobat.Com</h1>
-        <img src="assets/logo.png" alt="Ngemong.Com" width="500" class="img-fluid" />
+<body class="sm:flex justify-center items-center">
+  <div class="sm:border p-2 rounded-lg w-full sm:w-[620px] sm:py-4 my-4">
+    <h1 class="text-2xl font-semibold text-center mt-2 mb-4 flex justify-center items-center">
+      <img src="assets/logo.png" alt="MediaObat.com" class="h-8 inline-block mr-2" />
+      <span>Media Obat</span>
+    </h1>
+    <div id="content" class="sm:w-[600px]">
+      <div id="chatBox" class="mb-4 overflow-y-auto p-4 border border-gray-300 rounded-lg">
       </div>
+      <div id="loader"></div>
+      <div class="fixed bottom-0 mr-[10px] sm:p-0 sm:w-[600px] mb-[40px]">
+        <div class="flex">
+          <input type="text" id="userInput" class="flex-1 p-2 border border-gray-300 rounded-lg mr-2 w-full"
+            placeholder="Tanyakan sesuatu..." onkeydown="if(event.key === 'Enter') sendMessage()" autofocus />
+          <button onclick="sendMessage()"
+            class="bg-green-500 text-white px-4 rounded-lg hover:bg-green-400 w-[65px] h-[38px]">Kirim</button>
+        </div>
+        <div class="mt-2 text-xs text-gray-400 text-center">
+          Harap diperhatikan bahwa jawaban dari AI ini mungkin tidak selalu akurat.<br class="hidden sm:block" />
+          Konsultasikan dengan profesional kesehatan untuk informasi lebih lanjut.
+        </div>
+      </div>
+    </div>
+  </div>
 
-    </main><!-- /.container -->
+  <script>
+    function sendMessage() {
+      const userInput = document.getElementById('userInput').value;
+      if (userInput.trim() === "") return;
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="assets/jquery-3.2.1.slim.min.js"></script>
-    <script src="assets/bootstrap.min.js"></script>
-  </body>
+      const chatBox = document.getElementById('chatBox');
+
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.classList.add('message', 'user-message');
+      userMessageDiv.innerText = userInput;
+      chatBox.appendChild(userMessageDiv);
+
+      document.getElementById('userInput').value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      chat(userInput);
+    }
+
+    async function chat(userInput = null) {
+      const loader = document.getElementById('loader');
+      loader.style.display = 'block';
+  
+      const url = "https://ai.mediaobat.com/api/";
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userInput }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.reply) {
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.classList.add('message', 'bot-message');
+            botMessageDiv.innerHTML = data.reply;
+            chatBox.appendChild(botMessageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.animate({ scrollTop: chatBox.scrollHeight }, 'slow');
+          }
+          loader.style.display = 'none';
+        })
+        .catch(error => {
+          loader.style.display = 'none';
+        });
+    }
+
+    chat();
+  </script>
+</body>
+
 </html>
